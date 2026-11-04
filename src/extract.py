@@ -15,8 +15,9 @@ logging.basicConfig(
 
 # FUNÇÕES PARA EXECUÇÃO COMPLETA DA EXTRAÇÃO
 def baixar_arquivo(url: str, destino: Path) -> Path:
-    destino.parent.mkdir(parents=True, exist_ok=True)
+    logging.info(f"Baixando: {url}")
 
+    destino.parent.mkdir(parents=True, exist_ok=True)
     if destino.exists():
         logging.warning(f"Arquivo já existe: {destino}")
         return destino
@@ -51,6 +52,7 @@ def extrair_csv(arquivo_zip: Path, pasta_destino: Path) -> Path:
     logging.info(f"CSV extraído: {nome_csv}")
     
     return pasta_destino / nome_csv
+
 
 
 if __name__ == "__main__":
