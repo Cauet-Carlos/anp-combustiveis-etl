@@ -54,8 +54,8 @@ Detalhes completos em [`docs/exploracao.md`](docs/exploracao.md).
 
 - [x] Ambiente virtual e estrutura do projeto
 - [x] Exploração e diagnóstico dos dados
-- [ ] Extração (`extract.py`)
-- [ ] Transformação e limpeza (`transform.py`)
+- [x] Extração (`extract.py`)
+- [x] Transformação e limpeza (`transform.py`)
 - [ ] Modelagem do banco e criação das tabelas (`schema.sql`)
 - [ ] Carga no PostgreSQL (`load.py`)
 - [ ] Verificações de qualidade de dados e log de execução
