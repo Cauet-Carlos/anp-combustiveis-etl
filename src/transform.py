@@ -2,6 +2,7 @@ import logging
 from pathlib import Path
 import pandas as pd
 import re
+import os
 
 PASTA_RAW = Path(__file__).resolve().parent.parent / "data" / "raw"
 ARQUIVO = PASTA_RAW / "Preços semestrais - AUTOMOTIVOS_2025.02.csv"
@@ -55,31 +56,61 @@ def remocao_colunas_vazias(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
+def padronizar_numero_rua(df: pd.DataFrame, coluna: str = "numero_rua") -> pd.DataFrame:
+    df[coluna] = df[coluna].str.strip().str.upper()
+
+    mascara_sem_num = df[coluna].str.fullmatch(r"S\s*/?\s*NO?", na=False)
+
+    df.loc[mascara_sem_num, coluna] = "S/N"
+
+    total_sn = mascara_sem_num.sum()
+
+    logging.info(
+      f"Total de linhas padronizadas como 'S/N' na coluna '{coluna}':"
+      f" {total_sn}"
+    )
+
+    return df
+
+
+
+
+
+
 if __name__ == "__main__":
+    largura_terminal = os.get_terminal_size().columns
     df = leitura_dados(ARQUIVO)
     print(df.dtypes)
     print(df["CNPJ da Revenda"].str.len().value_counts())
 
-    print("=="*30)
+    print("=" * largura_terminal)
 
     print("Iniciando o processo de transformação...")
     df = padronizar_colunas(df)
     print("\nColunas padronizadas com sucesso:")
     print(list(df.columns))
 
-    print("=="*30)
+    print("=" * largura_terminal)
 
     print("Iniciando o processo de conversão de tipos...")
     df = conversao_tipos(df)
     print("\nTipos de dados atualizados:")
     print(df.dtypes)
 
-    print("=="*30)
+    print("=" * largura_terminal)
 
     print("Verificando e removendo colunas completamente vazias...")
     df = remocao_colunas_vazias(df)
     print("\nColunas restantes no DataFrame:")
     print(list(df.columns))
 
+    print("=" * largura_terminal)
+
+    print("Iniciando a padronização do número da rua...")
+    df = padronizar_numero_rua(df, coluna="numero_rua")
+    print("\nNúmero da rua padronizado com sucesso:")
+    print(df["numero_rua"].value_counts().head())
+
+   
 
 

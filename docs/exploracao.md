@@ -31,7 +31,9 @@ Sem zeros e nem negativos. Faixa por produto entre 3,09 (etanol) e 9,59 (gasolin
 | Data da Coleta | Vem como texto | Converter com format="%d/%m/%Y" |
 | Unidade de Medida | GNV em m³, resto em litro | Guardar a unidade no produto; não misturar na análise |
 | Produto | DIESEL e DIESEL S10 separados | Decidir se mantém separados |
+| numero_rua | Variações de "sem número" (S/N, SN, S N, S/NO) | Unificar em "S/N" |
 
+ 
 ## Perguntas para a próxima etapa
 - Os preços máximos são reais (regiões remotas) ou erro?
 - Manter DIESEL e DIESEL S10 separados na dim_produto?
