@@ -38,3 +38,10 @@ Sem zeros e nem negativos. Faixa por produto entre 3,09 (etanol) e 9,59 (gasolin
 - Os preços máximos são reais (regiões remotas) ou erro?
 - Manter DIESEL e DIESEL S10 separados na dim_produto?
 - Manter ou descartar Complemento?
+
+## Decisões de limpeza
+- Colunas de texto verificadas: sem variações de espaço ou maiúsculas; nenhum tratamento necessário
+- Bandeira BRANCA = posto sem bandeira de distribuidora (categoria válida, mantida)
+- RAIZEN e RAIZEN MIME mantidas separadas, como a fonte entrega
+- complemento: mantida (aceita nulos; ~77% vazia)
+- DIESEL e DIESEL S10: mantidos como produtos separados

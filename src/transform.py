@@ -7,6 +7,10 @@ import os
 PASTA_RAW = Path(__file__).resolve().parent.parent / "data" / "raw"
 ARQUIVO = PASTA_RAW / "Preços semestrais - AUTOMOTIVOS_2025.02.csv"
 
+PASTA_PROCESSED = Path(__file__).resolve().parent.parent / "data" / "processed"
+ARQUIVO_SAIDA = PASTA_PROCESSED / "precos_combustiveis_2025_02.csv"
+
+
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s - %(levelname)s - %(message)s"
@@ -72,9 +76,20 @@ def padronizar_numero_rua(df: pd.DataFrame, coluna: str = "numero_rua") -> pd.Da
 
     return df
 
+def salvar_dados(df: pd.DataFrame, destino: Path) -> Path:
+    destino.parent.mkdir(parents=True, exist_ok=True)
 
+    df.to_csv(destino, index=False, encoding="utf-8")
 
+    total_linhas = len(df)
+    tamanho_mb = destino.stat().st_size / (1024 * 1024)
+    
+    logging.info(
+      f"Arquivo salvo com sucesso! Linhas: {total_linhas} | Tamanho:"
+      f" {tamanho_mb:.2f} MB"
+    )
 
+    return destino
 
 
 if __name__ == "__main__":
@@ -111,6 +126,10 @@ if __name__ == "__main__":
     print("\nNúmero da rua padronizado com sucesso:")
     print(df["numero_rua"].value_counts().head())
 
+    print("=" * largura_terminal)
+
+    salvar_dados(df, ARQUIVO_SAIDA)
+    print("Pipeline concluído com sucesso!")
    
 
 
