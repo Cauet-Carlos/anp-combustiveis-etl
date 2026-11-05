@@ -19,6 +19,7 @@ def leitura_dados(caminho: Path) -> pd.DataFrame:
 
     return df
 
+
 def padronizar_colunas(df: pd.DataFrame) -> pd.DataFrame:
     df.columns = (
         df.columns.str.strip()
@@ -34,6 +35,26 @@ def padronizar_colunas(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
+def conversao_tipos(df: pd.DataFrame) -> pd.DataFrame:
+    df["data_da_coleta"] = pd.to_datetime(df["data_da_coleta"], format="%d/%m/%Y")
+
+    data_min = df["data_da_coleta"].min()
+    data_max = df["data_da_coleta"].max()
+
+    logging.info(f"Período de datas analisadas: {data_min} / {data_max}")
+
+    return df
+
+
+def remocao_colunas_vazias(df: pd.DataFrame) -> pd.DataFrame:
+    colunas_vazias = df.columns[df.isna().all()].to_list()
+    logging.info(f"Colunas vazias identificadas para remoção: {colunas_vazias}")
+
+    df = df.drop(columns=colunas_vazias)
+
+    return df
+
+
 if __name__ == "__main__":
     df = leitura_dados(ARQUIVO)
     print(df.dtypes)
@@ -44,6 +65,20 @@ if __name__ == "__main__":
     print("Iniciando o processo de transformação...")
     df = padronizar_colunas(df)
     print("\nColunas padronizadas com sucesso:")
+    print(list(df.columns))
+
+    print("=="*30)
+
+    print("Iniciando o processo de conversão de tipos...")
+    df = conversao_tipos(df)
+    print("\nTipos de dados atualizados:")
+    print(df.dtypes)
+
+    print("=="*30)
+
+    print("Verificando e removendo colunas completamente vazias...")
+    df = remocao_colunas_vazias(df)
+    print("\nColunas restantes no DataFrame:")
     print(list(df.columns))
 
 
